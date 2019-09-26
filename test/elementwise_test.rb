@@ -3,20 +3,18 @@ require 'test_helper'
 class COO::ElementWiseTest < Minitest::Test
 
   def setup
-    @left = COO.new  [2,2],[1,   4.2, 3,   4.2]
-    @right = COO.new [2,2],[1.9, 5.2, 3.1, 4]
+    @left = RubySparse::COO.new [3, 3], [1, 2, 3], [0, 1, 2], [0, 1, 2]
+    @right = RubySparse::COO.new [3, 3], [3, 2, 3], [0, 1, 2], [2, 2, 2]
   end
 
   def test_add
-    result = COO.new  [2,2],[2.9, 9.4, 6.1,   8.2]
+    result = RubySparse::COO.new [3, 3], [1, 3, 2, 2, 6], [0, 0, 1, 1, 2], [0, 2, 1, 2, 2]
     answer = @left + @right
+    assert_equal answer.dim, result.dim
+    assert_equal answer.shape, result.shape
+    assert_equal answer.nzcount, result.nzcount
     assert_equal answer.elements, result.elements
-  end
-
-  def test_subtract
-    result = COO.new  [2,2],[-0.9, -1, -0.1,   0.2]
-    answer = @left - @right
-    assert_equal answer.elements, result.elements
+    assert_equal answer.coords, result.coords
   end
 
 end
