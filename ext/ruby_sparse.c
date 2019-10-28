@@ -34,6 +34,8 @@ void coo_free(coo_matrix* mat);
 
 VALUE coo_add(VALUE self, VALUE another);
 
+VALUE coo_from_nmatrix(VALUE self, VALUE nmat);
+
 
 void Init_sparse() {
   RubySparse = rb_define_module("RubySparse");
@@ -50,6 +52,8 @@ void Init_sparse() {
   rb_define_method(COO, "dim", coo_get_ndims, 0);
 
   rb_define_method(COO, "+", coo_add, 1);
+
+  //rb_define_singleton_method(COO, "from_nmatrix", coo_from_nmatrix, 1);
 }
 
 
@@ -213,3 +217,5 @@ VALUE coo_add(VALUE self, VALUE another) {
 
   return Data_Wrap_Struct(COO, NULL, coo_free, result);
 }
+
+#include "interfaces/nmatrix.c"
