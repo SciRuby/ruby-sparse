@@ -5,19 +5,19 @@ require "rake/testtask"
 require "rdoc/task"
 
 Rake::ExtensionTask.new do |ext|
-  ext.name = 'sparse'
+  ext.name = 'ruby_sparse'
   ext.ext_dir = 'ext/'
   ext.lib_dir = 'lib/'
   ext.source_pattern = '**/*.{c,cpp, h}'
 end
 
 task :console do
-  cmd = ['irb', "-r './lib/sparse.rb'"]
+  cmd = ['irb', "-r './lib/ruby_sparse.rb'"]
   run(*cmd)
 end
 
 task :pry do
-  cmd = ['pry', "-r './lib/sparse.rb'"]
+  cmd = ['pry', "-r './lib/ruby_sparse.rb'"]
   run(*cmd)
 end
 

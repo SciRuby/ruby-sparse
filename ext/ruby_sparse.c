@@ -22,7 +22,7 @@ VALUE RubySparse = Qnil;
 VALUE SparseMatrix = Qnil;
 VALUE COO = Qnil;
 
-void Init_sparse();
+void Init_ruby_sparse();
 VALUE coo_init(int argc, VALUE* argv, VALUE self);
 VALUE coo_get_shape(VALUE self);
 VALUE coo_get_elements(VALUE self);
@@ -37,7 +37,7 @@ VALUE coo_add(VALUE self, VALUE another);
 VALUE coo_from_nmatrix(VALUE self, VALUE nmat);
 
 
-void Init_sparse() {
+void Init_ruby_sparse() {
   RubySparse = rb_define_module("RubySparse");
 
   SparseMatrix = rb_define_class_under(RubySparse, "SparseMatrix", rb_cObject);
