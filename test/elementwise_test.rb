@@ -1,6 +1,6 @@
-require 'test_helper'
+require_relative 'test_helper'
 
-class COO::ElementWiseTest < Minitest::Test
+class RubySparse::COO::ElementWiseTest < Minitest::Test
 
   def setup
     @left = RubySparse::COO.new [3, 3], [1, 2, 3], [0, 1, 2], [0, 1, 2]
