@@ -1,6 +1,6 @@
 require_relative 'mkmf.rb'
 
-extension_name = 'sparse'
+extension_name = 'ruby_sparse'
 
 $INSTALLFILES = [
   ['ruby_sparse.h'       , '$(archdir)'],

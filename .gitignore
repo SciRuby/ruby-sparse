@@ -1,7 +1,6 @@
 *.gem
 *.rbc
 *.so
-.vscode
 /.config
 /coverage/
 /InstalledFiles
@@ -13,6 +12,7 @@
 /tmp/
 .rake_tasks~
 
+/.vscode
 # Used by dotenv library to load environment variables.
 # .env
 

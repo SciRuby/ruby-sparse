@@ -1,20 +1,20 @@
 # coding: utf-8
 $:.unshift File.expand_path("../lib", __FILE__)
 
-require 'sparse/version.rb'
+require 'ruby_sparse/version.rb'
 
 Gem::Specification.new do |gem|
-  gem.name        = 'sparse'
+  gem.name        = 'ruby-sparse'
   gem.version     = '0.0.1'
   gem.date        = '2019-09-25'
   gem.summary     = 'Sparse matrices'
   # gem.description =  SparseMatrix::DESCRIPTION
   gem.authors     = ['Udit Gulati']
   gem.email       = 'uditgulati0@gmail.com'
-  gem.files       = ['lib/sparse.rb']
+  gem.files       = ['lib/ruby_sparse.rb']
   gem.homepage    = 'http://rubygems.org/gems/ruby-sparse'
   gem.license     = 'BSD-3-Clause'
-  gem.extensions  = %w['ext/extconf.rb']
+  gem.extensions  = %w[ext/extconf.rb]
   gem.files       = `git ls-files -- ext/`.split("\n")
   gem.files      += `git ls-files -- lib`.split("\n")
   gem.require_paths = ["lib"]
