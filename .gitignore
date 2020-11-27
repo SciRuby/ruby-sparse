@@ -11,6 +11,7 @@
 /test/version_tmp/
 /tmp/
 .rake_tasks~
+Gemfile.lock
 
 /.vscode
 # Used by dotenv library to load environment variables.
