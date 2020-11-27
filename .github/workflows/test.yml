@@ -31,8 +31,8 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
     - name: Install dependencies
-      run: sudo ./travis.sh before_install
+      run: sudo bash travis.sh before_install
     - name: Compile
-      run: sudo ./travis.sh install
+      run: sudo bash travis.sh install
     - name: Run tests
-      run: sudo ./travis.sh script
+      run: sudo bash travis.sh script
