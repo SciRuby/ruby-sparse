@@ -11,16 +11,27 @@ typedef struct SPARSE_STRUCT
 typedef struct COO_STRUCT
 {
   size_t ndims;
-  size_t count;     //count of non-zero elements;    
+  size_t count;     //count of non-zero elements;
   size_t* shape;
   double* elements; //elements array
   size_t* ia;       //row index
   size_t* ja;       //col index
 }coo_matrix;
 
+// typedef struct GCXS_STRUCT
+// {
+//   size_t ndims;
+//   size_t count;     //count of non-zero elements;
+//   size_t* shape;
+//   double* elements; //elements array
+//   size_t* ia;       //row index
+//   size_t* ja;       //col index
+// }coo_matrix;
+
 VALUE RubySparse = Qnil;
-VALUE SparseMatrix = Qnil;
+VALUE SparseArray = Qnil;
 VALUE COO = Qnil;
+// VALUE GCXS = Qnil;
 
 void Init_ruby_sparse();
 VALUE coo_init(int argc, VALUE* argv, VALUE self);
@@ -41,7 +52,8 @@ void Init_ruby_sparse() {
   RubySparse = rb_define_module("RubySparse");
 
   SparseArray = rb_define_class_under(RubySparse, "SparseArray", rb_cObject);
-  COO         = rb_define_class_under(RubySparse, "COO", rb_cObject);
+  COO         = rb_define_class_under(RubySparse, "COO", SparseArray);
+  // GCXS        = rb_define_class_under(RubySparse, "GCXS", SparseArray);
 
   rb_define_alloc_func(COO, coo_alloc);
   rb_define_method(COO, "initialize", coo_init, -1);

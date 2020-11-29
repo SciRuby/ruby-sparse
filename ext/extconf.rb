@@ -3,7 +3,7 @@ require_relative 'mkmf.rb'
 extension_name = 'ruby_sparse'
 
 $INSTALLFILES = [
-  ['ruby_sparse.h'       , '$(archdir)'],
+  ['ruby_sparse.h', '$(archdir)'],
   ['sparse_config.h', '$(archdir)'],
 ]
 

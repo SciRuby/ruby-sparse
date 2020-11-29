@@ -11,7 +11,7 @@ module RubySparse
   
   end
 
-  class COO
+  class COO < SparseArray
 
     # attr_reader :shape, :elements
   
