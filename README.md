@@ -1,5 +1,7 @@
 # Ruby-Sparse
 
+[![Build Status](https://github.com/SciRuby/ruby-sparse/workflows/Ruby-Sparse%20test/badge.svg?branch=master)](https://github.com/SciRuby/ruby-sparse/actions?query=workflow%3A%22Ruby-Sparse+test%22)
+
 Ruby Library for Sparse Tensors.
 
 ## Installation

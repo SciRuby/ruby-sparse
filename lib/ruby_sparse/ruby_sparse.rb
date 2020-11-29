@@ -1,6 +1,6 @@
 module RubySparse
 
-  class SparseMatrix
+  class SparseArray
 
     # attr_reader :shape, :elements
   

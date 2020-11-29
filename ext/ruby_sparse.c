@@ -40,8 +40,8 @@ VALUE coo_from_nmatrix(VALUE self, VALUE nmat);
 void Init_ruby_sparse() {
   RubySparse = rb_define_module("RubySparse");
 
-  SparseMatrix = rb_define_class_under(RubySparse, "SparseMatrix", rb_cObject);
-  COO          = rb_define_class_under(RubySparse, "COO", rb_cObject);
+  SparseArray = rb_define_class_under(RubySparse, "SparseArray", rb_cObject);
+  COO         = rb_define_class_under(RubySparse, "COO", rb_cObject);
 
   rb_define_alloc_func(COO, coo_alloc);
   rb_define_method(COO, "initialize", coo_init, -1);
