@@ -45,7 +45,7 @@ VALUE coo_get_elements(VALUE self) {
   Data_Get_Struct(self, coo_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->count);
-  for (size_t index = 0; index < input->count; index++){
+  for (size_t index = 0; index < input->count; index++) {
     array[index] = DBL2NUM(input->elements[index]);
   }
 
@@ -59,12 +59,12 @@ VALUE coo_get_coords(VALUE self) {
   Data_Get_Struct(self, coo_matrix, input);
 
   VALUE* array_ia = ALLOC_N(VALUE, input->count);
-  for (size_t index = 0; index < input->count; index++){
+  for (size_t index = 0; index < input->count; index++) {
     array_ia[index] = SIZET2NUM(input->ia[index]);
   }
 
   VALUE* array_ja = ALLOC_N(VALUE, input->count);
-  for (size_t index = 0; index < input->count; index++){
+  for (size_t index = 0; index < input->count; index++) {
     array_ja[index] = SIZET2NUM(input->ja[index]);
   }
 
@@ -98,7 +98,7 @@ VALUE coo_get_shape(VALUE self) {
   Data_Get_Struct(self, coo_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->ndims);
-  for (size_t index = 0; index < input->ndims; index++){
+  for (size_t index = 0; index < input->ndims; index++) {
     array[index] = SIZET2NUM(input->shape[index]);
   }
 
