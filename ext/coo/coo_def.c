@@ -3,6 +3,7 @@ VALUE coo_init(int argc, VALUE* argv, VALUE self) {
   Data_Get_Struct(self, coo_matrix, mat);
 
   if(argc > 0){
+    mat->dtype = sp_float64;
     mat->ndims = 2;
     mat->count = (size_t)RARRAY_LEN(argv[1]);
     mat->shape = ALLOC_N(size_t, mat->ndims);
@@ -89,6 +90,15 @@ VALUE coo_get_ndims(VALUE self) {
   Data_Get_Struct(self, coo_matrix, input);
 
   return SIZET2NUM(input->ndims);
+}
+
+
+VALUE coo_get_dtype(VALUE self) {
+  coo_matrix* input;
+
+  Data_Get_Struct(self, coo_matrix, input);
+
+  return ID2SYM(rb_intern(DTYPE_NAMES[input->dtype]));
 }
 
 

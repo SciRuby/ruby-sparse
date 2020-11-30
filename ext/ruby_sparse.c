@@ -1,6 +1,28 @@
 #include "ruby.h"
 #include "stdio.h"
 
+# define SP_NUM_DTYPES 6
+
+
+// data types
+typedef enum sp_dtype{
+  sp_bool,
+  sp_int,
+  sp_float32,
+  sp_float64,
+  sp_complex32,
+  sp_complex64
+}sp_dtype;
+
+const char* const DTYPE_NAMES[SP_NUM_DTYPES] = {
+  "sp_bool",
+  "sp_int",
+  "sp_float32",
+  "sp_float64",
+  "sp_complex32",
+  "sp_complex64"
+};
+
 typedef struct SPARSE_STRUCT
 {
   size_t ndims;
@@ -10,6 +32,7 @@ typedef struct SPARSE_STRUCT
 
 typedef struct COO_STRUCT
 {
+  sp_dtype dtype;
   size_t ndims;
   size_t count;     //count of non-zero elements;
   size_t* shape;
@@ -20,6 +43,7 @@ typedef struct COO_STRUCT
 
 // typedef struct GCXS_STRUCT
 // {
+//   sp_dtype dtype;
 //   size_t ndims;
 //   size_t count;     //count of non-zero elements;
 //   size_t* shape;
@@ -35,6 +59,7 @@ VALUE COO = Qnil;
 
 void Init_ruby_sparse();
 VALUE coo_init(int argc, VALUE* argv, VALUE self);
+VALUE coo_get_dtype(VALUE self);
 VALUE coo_get_shape(VALUE self);
 VALUE coo_get_elements(VALUE self);
 VALUE coo_get_coords(VALUE self);
@@ -57,6 +82,7 @@ void Init_ruby_sparse() {
 
   rb_define_alloc_func(COO, coo_alloc);
   rb_define_method(COO, "initialize", coo_init, -1);
+  rb_define_method(COO, "dtype", coo_get_dtype, 0);
   rb_define_method(COO, "shape", coo_get_shape, 0);
   rb_define_method(COO, "elements", coo_get_elements, 0);
   rb_define_method(COO, "coords", coo_get_coords, 0);
