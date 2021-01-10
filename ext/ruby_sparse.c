@@ -69,6 +69,8 @@ VALUE coo_alloc(VALUE klass);
 void coo_free(coo_matrix* mat);
 
 VALUE coo_add(VALUE self, VALUE another);
+VALUE coo_sub(VALUE self, VALUE another);
+VALUE coo_mul(VALUE self, VALUE another);
 
 VALUE coo_from_nmatrix(VALUE self, VALUE nmat);
 
@@ -90,6 +92,8 @@ void Init_ruby_sparse() {
   rb_define_method(COO, "dim", coo_get_ndims, 0);
 
   rb_define_method(COO, "+", coo_add, 1);
+  rb_define_method(COO, "-", coo_sub, 1);
+  rb_define_method(COO, "*", coo_mul, 1);
 
   //rb_define_singleton_method(COO, "from_nmatrix", coo_from_nmatrix, 1);
 }
