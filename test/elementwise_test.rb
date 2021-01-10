@@ -38,3 +38,36 @@ class RubySparse::COO::ElementWiseTest < Minitest::Test
   end
 
 end
+
+class RubySparse::DIA::ElementWiseTest < Minitest::Test
+
+  def setup
+    @left = RubySparse::DIA.new [3, 3], [1, 0, 3]
+    @right = RubySparse::DIA.new [3, 3], [3, 2, 3]
+  end
+
+  def test_add
+    result = RubySparse::DIA.new [3, 3], [4, 2, 6]
+    answer = @left + @right
+    assert_equal answer.dim, result.dim
+    assert_equal answer.shape, result.shape
+    assert_equal answer.elements, result.elements
+  end
+
+  def test_sub
+    result = RubySparse::DIA.new [3, 3], [-2, -2, 0]
+    answer = @left - @right
+    assert_equal answer.dim, result.dim
+    assert_equal answer.shape, result.shape
+    assert_equal answer.elements, result.elements
+  end
+
+  def test_mul
+    result = RubySparse::DIA.new [3, 3], [3, 0, 9]
+    answer = @left * @right
+    assert_equal answer.dim, result.dim
+    assert_equal answer.shape, result.shape
+    assert_equal answer.elements, result.elements
+  end
+
+end
