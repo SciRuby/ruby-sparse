@@ -1,4 +1,4 @@
-double perform_oper(double val_a, double val_b, char oper) {
+double coo_perform_oper(double val_a, double val_b, char oper) {
   switch(oper) {
     case '+':
       return (val_a + val_b);
@@ -38,7 +38,7 @@ VALUE coo_elementwise_binary(VALUE self, VALUE another, char oper) {
   while (left_index < left->count && right_index < right->count) {
     if (left->ia[left_index] == right->ia[right_index] //left and right indices equal
     && left->ja[left_index] == right->ja[right_index]) {
-      double result_val = perform_oper(left->elements[left_index], right->elements[right_index], oper);
+      double result_val = coo_perform_oper(left->elements[left_index], right->elements[right_index], oper);
       if(fabs(result_val) < 1e-6) {  //near to zero
         left_index++, right_index++;
         continue;  //skip current result value
@@ -51,7 +51,7 @@ VALUE coo_elementwise_binary(VALUE self, VALUE another, char oper) {
     }
     else if ((left->ia[left_index] < right->ia[right_index]) //left index smaller
     || (left->ia[left_index] == right->ia[right_index] && left->ja[left_index] < right->ja[right_index])) {
-      double result_val = perform_oper(left->elements[left_index], 0.0, oper);
+      double result_val = coo_perform_oper(left->elements[left_index], 0.0, oper);
       if(fabs(result_val) < 1e-6) {  //near to zero
         left_index++;
         continue;  //skip current result value
@@ -63,7 +63,7 @@ VALUE coo_elementwise_binary(VALUE self, VALUE another, char oper) {
       left_index++, result_index++;
     }
     else {  //right index smaller
-      double result_val = perform_oper(0.0, right->elements[right_index], oper);
+      double result_val = coo_perform_oper(0.0, right->elements[right_index], oper);
       if(fabs(result_val) < 1e-6) {  //near to zero
         right_index++;
         continue;  //skip current result value
