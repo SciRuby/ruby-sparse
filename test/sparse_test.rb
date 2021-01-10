@@ -27,3 +27,23 @@ class RubySparse::COO::CreationTest < Minitest::Test
   end
 
 end
+
+class RubySparse::DIA::CreationTest < Minitest::Test
+
+  def setup
+    @n = RubySparse::DIA.new [3, 3], [1, 0, 3]
+  end
+
+  def test_ndims
+    assert_equal 2, @n.dim
+  end
+
+  def test_shape
+    assert_equal [3, 3], @n.shape
+  end
+
+  def test_elements
+    assert_equal [1, 0, 3], @n.elements
+  end
+
+end
