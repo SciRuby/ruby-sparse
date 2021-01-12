@@ -2,6 +2,8 @@
 
 [![Build Status](https://github.com/SciRuby/ruby-sparse/workflows/Ruby-Sparse%20test/badge.svg?branch=master)](https://github.com/SciRuby/ruby-sparse/actions?query=workflow%3A%22Ruby-Sparse+test%22)
 
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop)
+
 Ruby Library for Sparse Tensors.
 
 ## Installation
