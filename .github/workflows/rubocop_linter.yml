@@ -1,4 +1,4 @@
-name: RuboCop
+name: RuboCop Linter
 
 on: [push, pull_request]
 
