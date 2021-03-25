@@ -79,7 +79,12 @@ VALUE coo_elementwise_binary(VALUE self, VALUE another, char oper) {
   }
 
   while (left_index < left->count) {
-    result->elements[result_index] = left->elements[left_index];
+    double result_val = coo_perform_oper(left->elements[left_index], 0.0, oper);
+    if(fabs(result_val) < 1e-6) {  //near to zero
+      left_index++;
+      continue;  //skip current result value
+    }
+    result->elements[result_index] = result_val;
     result->ia[result_index]       = left->ia[left_index];
     result->ja[result_index]       = left->ja[left_index];
 
@@ -88,7 +93,12 @@ VALUE coo_elementwise_binary(VALUE self, VALUE another, char oper) {
   }
 
   while (right_index < right->count) {
-    result->elements[result_index] = right->elements[right_index];
+    double result_val = coo_perform_oper(0.0, right->elements[right_index], oper);
+    if(fabs(result_val) < 1e-6) {  //near to zero
+      right_index++;
+      continue;  //skip current result value
+    }
+    result->elements[result_index] = result_val;
     result->ia[result_index]       = right->ia[right_index];
     result->ja[result_index]       = right->ja[right_index];
 
