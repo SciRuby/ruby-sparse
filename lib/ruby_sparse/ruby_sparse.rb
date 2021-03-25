@@ -80,6 +80,36 @@ module RubySparse
       m = NMatrix.new self.shape, nm_elements
       return m
     end
+
+    def _dump data
+      [
+        dim,
+        nzcount,
+        dtype,
+        shape,
+        elements,
+        coords[0],
+        coords[1],
+      ].join ":"
+    end
+
+    def self._load args
+      values = args.split(":")
+      dim = values[0].to_i
+      nzcount = values[1].to_i
+      dtype = values[2].to_sym
+      shape = values[3...(3+dim)]
+      elements = values[(3+dim)...(3+dim+nzcount)]
+      ia = values[(3+dim+nzcount)...(3+dim+(2*nzcount))]
+      ja = values[(3+dim+(2*nzcount))...(3+dim+(3*nzcount))]
+
+      (0...dim).each { |index| shape[index] = shape[index].to_i }
+      (0...nzcount).each { |index| elements[index] = elements[index].to_f }
+      (0...nzcount).each { |index| ia[index] = ia[index].to_i }
+      (0...nzcount).each { |index| ja[index] = ja[index].to_i }
+
+      self.new(shape, elements, ia, ja)
+    end
     
   end
 
@@ -139,6 +169,28 @@ module RubySparse
       
       m = NMatrix.new self.shape, nm_elements
       return m
+    end
+
+    def _dump data
+      [
+        dim,
+        dtype,
+        shape,
+        elements,
+      ].join ":"
+    end
+
+    def self._load args
+      values = args.split(":")
+      dim = values[0].to_i
+      dtype = values[1].to_sym
+      shape = values[2...(2+dim)]
+      elements = values[(2+dim)...(2+dim+shape[0].to_i)]
+
+      (0...dim).each { |index| shape[index] = shape[index].to_i }
+      (0...shape[0]).each { |index| elements[index] = elements[index].to_f }
+
+      self.new(shape, elements)
     end
 
   end
@@ -215,6 +267,38 @@ module RubySparse
       return m
     end
 
+    def _dump data
+      [
+        dim,
+        nzcount,
+        dtype,
+        shape,
+        elements,
+        indptr,
+        indices,
+      ].join ":"
+    end
+
+    def self._load args
+      values = args.split(":")
+      dim = values[0].to_i
+      nzcount = values[1].to_i
+      dtype = values[2].to_sym
+      shape = values[3...(3+dim)]
+      elements = values[(3+dim)...(3+dim+nzcount)]
+      ip = values[(3+dim+nzcount)...(3+dim+nzcount+shape[0].to_i)]
+      ja = values[(3+dim+nzcount+shape[0].to_i)...(3+dim+(2*nzcount)+shape[0].to_i)]
+
+      (0...dim).each { |index| shape[index] = shape[index].to_i }
+      (0...nzcount).each { |index| elements[index] = elements[index].to_f }
+      (0...shape[0]).each { |index| ip[index] = ip[index].to_i }
+      (0...nzcount).each { |index| ja[index] = ja[index].to_i }
+
+      # convert ip to ia here and then pass ia below instead
+
+      self.new(shape, elements, ip, ja)
+    end
+
   end
 
   class CSC < SparseArray
@@ -287,6 +371,38 @@ module RubySparse
       
       m = NMatrix.new self.shape, nm_elements
       return m
+    end
+
+    def _dump data
+      [
+        dim,
+        nzcount,
+        dtype,
+        shape,
+        elements,
+        indices,
+        indptr,
+      ].join ":"
+    end
+
+    def self._load args
+      values = args.split(":")
+      dim = values[0].to_i
+      nzcount = values[1].to_i
+      dtype = values[2].to_sym
+      shape = values[3...(3+dim)]
+      elements = values[(3+dim)...(3+dim+nzcount)]
+      ia = values[(3+dim+nzcount)...(3+dim+(2*nzcount))]
+      jp = values[(3+dim+(2*nzcount))...(3+dim+(2*nzcount)+shape[1].to_i)]
+
+      (0...dim).each { |index| shape[index] = shape[index].to_i }
+      (0...nzcount).each { |index| elements[index] = elements[index].to_f }
+      (0...nzcount).each { |index| ia[index] = ia[index].to_i }
+      (0...shape[1]).each { |index| jp[index] = jp[index].to_i }
+
+      # convert jp to ja here and then pass ja below instead
+
+      self.new(shape, elements, ia, jp)
     end
 
   end
