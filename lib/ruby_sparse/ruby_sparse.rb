@@ -20,6 +20,24 @@ module RubySparse
     #   @elements = elements
     # end
 
+    def pretty_print(q)
+      self.inspect.pretty_print(q)
+    end
+
+    def inspect #:nodoc:
+      original_inspect = super()
+      original_inspect = original_inspect[0...original_inspect.size-1]
+      original_inspect + "; " + inspect_helper.join("; ") + ">"
+    end
+  
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
+    end
+
     def self.from_nmatrix(nmat)
       nm_elements = nmat.elements
       nm_shape = nmat.shape
@@ -74,6 +92,24 @@ module RubySparse
     #   @elements = elements
     # end
 
+    def pretty_print(q)
+      self.inspect.pretty_print(q)
+    end
+
+    def inspect #:nodoc:
+      original_inspect = super()
+      original_inspect = original_inspect[0...original_inspect.size-1]
+      original_inspect + "; " + inspect_helper.join("; ") + ">"
+    end
+  
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
+    end
+
     def self.from_nmatrix(nmat)
       nm_elements = nmat.elements
       nm_shape = nmat.shape
@@ -115,6 +151,24 @@ module RubySparse
     #   @shape = shape
     #   @elements = elements
     # end
+
+    def pretty_print(q)
+      self.inspect.pretty_print(q)
+    end
+
+    def inspect #:nodoc:
+      original_inspect = super()
+      original_inspect = original_inspect[0...original_inspect.size-1]
+      original_inspect + "; " + inspect_helper.join("; ") + ">"
+    end
+  
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
+    end
 
     def self.from_nmatrix(nmat)
       nm_elements = nmat.elements
@@ -171,6 +225,24 @@ module RubySparse
     #   @shape = shape
     #   @elements = elements
     # end
+
+    def pretty_print(q)
+      self.inspect.pretty_print(q)
+    end
+
+    def inspect #:nodoc:
+      original_inspect = super()
+      original_inspect = original_inspect[0...original_inspect.size-1]
+      original_inspect + "; " + inspect_helper.join("; ") + ">"
+    end
+  
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
+    end
 
     def self.from_nmatrix(nmat)
       nm_elements = nmat.elements
