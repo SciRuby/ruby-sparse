@@ -1,6 +1,6 @@
 VALUE csr_init(int argc, VALUE* argv, VALUE self) {
   csr_matrix* mat;
-  Data_Get_Struct(self, csr_matrix, mat);
+  TypedData_Get_Struct(self, csr_matrix, mat);
 
   if(argc > 0){
     mat->dtype = sp_float64;
@@ -48,7 +48,7 @@ VALUE csr_init(int argc, VALUE* argv, VALUE self) {
 VALUE csr_alloc(VALUE klass) {
   csr_matrix* mat = ALLOC(csr_matrix);
 
-  return Data_Wrap_Struct(klass, NULL, csr_free, mat);
+  return TypedData_Wrap_Struct(klass, NULL, csr_free, mat);
 }
 
 
@@ -60,7 +60,7 @@ void csr_free(csr_matrix* mat) {
 VALUE csr_get_elements(VALUE self) {
   csr_matrix* input;
 
-  Data_Get_Struct(self, csr_matrix, input);
+  TypedData_Get_Struct(self, csr_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->count);
   for (size_t index = 0; index < input->count; index++) {
@@ -74,7 +74,7 @@ VALUE csr_get_elements(VALUE self) {
 VALUE csr_get_indices(VALUE self) {
   csr_matrix* input;
 
-  Data_Get_Struct(self, csr_matrix, input);
+  TypedData_Get_Struct(self, csr_matrix, input);
 
   VALUE* array_ja = ALLOC_N(VALUE, input->count);
   for (size_t index = 0; index < input->count; index++) {
@@ -88,7 +88,7 @@ VALUE csr_get_indices(VALUE self) {
 VALUE csr_get_indptr(VALUE self) {
   csr_matrix* input;
 
-  Data_Get_Struct(self, csr_matrix, input);
+  TypedData_Get_Struct(self, csr_matrix, input);
 
   VALUE* array_ip = ALLOC_N(VALUE, input->shape[0] + 1);
   for (size_t index = 0; index <= input->shape[0]; index++) {
@@ -102,7 +102,7 @@ VALUE csr_get_indptr(VALUE self) {
 VALUE csr_get_count(VALUE self) {
   csr_matrix* input;
 
-  Data_Get_Struct(self, csr_matrix, input);
+  TypedData_Get_Struct(self, csr_matrix, input);
 
   return SIZET2NUM(input->count);
 }
@@ -111,7 +111,7 @@ VALUE csr_get_count(VALUE self) {
 VALUE csr_get_ndims(VALUE self) {
   csr_matrix* input;
 
-  Data_Get_Struct(self, csr_matrix, input);
+  TypedData_Get_Struct(self, csr_matrix, input);
 
   return SIZET2NUM(input->ndims);
 }
@@ -120,7 +120,7 @@ VALUE csr_get_ndims(VALUE self) {
 VALUE csr_get_dtype(VALUE self) {
   csr_matrix* input;
 
-  Data_Get_Struct(self, csr_matrix, input);
+  TypedData_Get_Struct(self, csr_matrix, input);
 
   return ID2SYM(rb_intern(DTYPE_NAMES[input->dtype]));
 }
@@ -129,7 +129,7 @@ VALUE csr_get_dtype(VALUE self) {
 VALUE csr_get_shape(VALUE self) {
   csr_matrix* input;
 
-  Data_Get_Struct(self, csr_matrix, input);
+  TypedData_Get_Struct(self, csr_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->ndims);
   for (size_t index = 0; index < input->ndims; index++) {

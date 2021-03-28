@@ -18,8 +18,8 @@ double csc_perform_oper(double val_a, double val_b, char oper) {
 VALUE csc_elementwise_binary(VALUE self, VALUE another, char oper) {
   csc_matrix* left;
   csc_matrix* right;
-  Data_Get_Struct(self, csc_matrix, left);
-  Data_Get_Struct(another, csc_matrix, right);
+  TypedData_Get_Struct(self, csc_matrix, left);
+  TypedData_Get_Struct(another, csc_matrix, right);
 
   csc_matrix* result = ALLOC(csc_matrix);
   result->count = 0;
@@ -116,7 +116,7 @@ VALUE csc_elementwise_binary(VALUE self, VALUE another, char oper) {
     result->jp[index] += result->jp[index - 1];
   }
 
-  return Data_Wrap_Struct(CSC, NULL, csc_free, result);
+  return TypedData_Wrap_Struct(CSC, NULL, csc_free, result);
 }
 
 VALUE csc_add(VALUE self, VALUE another) {

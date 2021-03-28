@@ -18,8 +18,8 @@ double dia_perform_oper(double val_a, double val_b, char oper) {
 VALUE dia_elementwise_binary(VALUE self, VALUE another, char oper) {
   dia_matrix* left;
   dia_matrix* right;
-  Data_Get_Struct(self, dia_matrix, left);
-  Data_Get_Struct(another, dia_matrix, right);
+  TypedData_Get_Struct(self, dia_matrix, left);
+  TypedData_Get_Struct(another, dia_matrix, right);
 
   dia_matrix* result = ALLOC(dia_matrix);
   result->count = left->count;
@@ -37,7 +37,7 @@ VALUE dia_elementwise_binary(VALUE self, VALUE another, char oper) {
     result->elements[result_index] = result_val;
   }
 
-  return Data_Wrap_Struct(DIA, NULL, dia_free, result);
+  return TypedData_Wrap_Struct(DIA, NULL, dia_free, result);
 }
 
 VALUE dia_add(VALUE self, VALUE another) {

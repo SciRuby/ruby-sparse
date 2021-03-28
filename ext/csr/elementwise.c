@@ -18,8 +18,8 @@ double csr_perform_oper(double val_a, double val_b, char oper) {
 VALUE csr_elementwise_binary(VALUE self, VALUE another, char oper) {
   csr_matrix* left;
   csr_matrix* right;
-  Data_Get_Struct(self, csr_matrix, left);
-  Data_Get_Struct(another, csr_matrix, right);
+  TypedData_Get_Struct(self, csr_matrix, left);
+  TypedData_Get_Struct(another, csr_matrix, right);
 
   csr_matrix* result = ALLOC(csr_matrix);
   result->count = 0;
@@ -116,7 +116,7 @@ VALUE csr_elementwise_binary(VALUE self, VALUE another, char oper) {
     result->ip[index] += result->ip[index - 1];
   }
 
-  return Data_Wrap_Struct(CSR, NULL, csr_free, result);
+  return TypedData_Wrap_Struct(CSR, NULL, csr_free, result);
 }
 
 VALUE csr_add(VALUE self, VALUE another) {

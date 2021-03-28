@@ -1,6 +1,6 @@
 VALUE csc_init(int argc, VALUE* argv, VALUE self) {
   csc_matrix* mat;
-  Data_Get_Struct(self, csc_matrix, mat);
+  TypedData_Get_Struct(self, csc_matrix, mat);
 
   if(argc > 0){
     mat->dtype = sp_float64;
@@ -48,7 +48,7 @@ VALUE csc_init(int argc, VALUE* argv, VALUE self) {
 VALUE csc_alloc(VALUE klass) {
   csc_matrix* mat = ALLOC(csc_matrix);
 
-  return Data_Wrap_Struct(klass, NULL, csc_free, mat);
+  return TypedData_Wrap_Struct(klass, NULL, csc_free, mat);
 }
 
 
@@ -60,7 +60,7 @@ void csc_free(csc_matrix* mat) {
 VALUE csc_get_elements(VALUE self) {
   csc_matrix* input;
 
-  Data_Get_Struct(self, csc_matrix, input);
+  TypedData_Get_Struct(self, csc_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->count);
   for (size_t index = 0; index < input->count; index++) {
@@ -74,7 +74,7 @@ VALUE csc_get_elements(VALUE self) {
 VALUE csc_get_indices(VALUE self) {
   csc_matrix* input;
 
-  Data_Get_Struct(self, csc_matrix, input);
+  TypedData_Get_Struct(self, csc_matrix, input);
 
   VALUE* array_ia = ALLOC_N(VALUE, input->count);
   for (size_t index = 0; index < input->count; index++) {
@@ -88,7 +88,7 @@ VALUE csc_get_indices(VALUE self) {
 VALUE csc_get_indptr(VALUE self) {
   csc_matrix* input;
 
-  Data_Get_Struct(self, csc_matrix, input);
+  TypedData_Get_Struct(self, csc_matrix, input);
 
   VALUE* array_jp = ALLOC_N(VALUE, input->shape[1] + 1);
   for (size_t index = 0; index <= input->shape[1]; index++) {
@@ -102,7 +102,7 @@ VALUE csc_get_indptr(VALUE self) {
 VALUE csc_get_count(VALUE self) {
   csc_matrix* input;
 
-  Data_Get_Struct(self, csc_matrix, input);
+  TypedData_Get_Struct(self, csc_matrix, input);
 
   return SIZET2NUM(input->count);
 }
@@ -111,7 +111,7 @@ VALUE csc_get_count(VALUE self) {
 VALUE csc_get_ndims(VALUE self) {
   csc_matrix* input;
 
-  Data_Get_Struct(self, csc_matrix, input);
+  TypedData_Get_Struct(self, csc_matrix, input);
 
   return SIZET2NUM(input->ndims);
 }
@@ -120,7 +120,7 @@ VALUE csc_get_ndims(VALUE self) {
 VALUE csc_get_dtype(VALUE self) {
   csc_matrix* input;
 
-  Data_Get_Struct(self, csc_matrix, input);
+  TypedData_Get_Struct(self, csc_matrix, input);
 
   return ID2SYM(rb_intern(DTYPE_NAMES[input->dtype]));
 }
@@ -129,7 +129,7 @@ VALUE csc_get_dtype(VALUE self) {
 VALUE csc_get_shape(VALUE self) {
   csc_matrix* input;
 
-  Data_Get_Struct(self, csc_matrix, input);
+  TypedData_Get_Struct(self, csc_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->ndims);
   for (size_t index = 0; index < input->ndims; index++) {

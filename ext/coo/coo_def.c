@@ -1,6 +1,6 @@
 VALUE coo_init(int argc, VALUE* argv, VALUE self) {
   coo_matrix* mat;
-  Data_Get_Struct(self, coo_matrix, mat);
+  TypedData_Get_Struct(self, coo_matrix, mat);
 
   if(argc > 0){
     mat->dtype = sp_float64;
@@ -31,7 +31,7 @@ VALUE coo_init(int argc, VALUE* argv, VALUE self) {
 VALUE coo_alloc(VALUE klass) {
   coo_matrix* mat = ALLOC(coo_matrix);
 
-  return Data_Wrap_Struct(klass, NULL, coo_free, mat);
+  return TypedData_Wrap_Struct(klass, NULL, coo_free, mat);
 }
 
 
@@ -43,7 +43,7 @@ void coo_free(coo_matrix* mat) {
 VALUE coo_get_elements(VALUE self) {
   coo_matrix* input;
 
-  Data_Get_Struct(self, coo_matrix, input);
+  TypedData_Get_Struct(self, coo_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->count);
   for (size_t index = 0; index < input->count; index++) {
@@ -57,7 +57,7 @@ VALUE coo_get_elements(VALUE self) {
 VALUE coo_get_coords(VALUE self) {
   coo_matrix* input;
 
-  Data_Get_Struct(self, coo_matrix, input);
+  TypedData_Get_Struct(self, coo_matrix, input);
 
   VALUE* array_ia = ALLOC_N(VALUE, input->count);
   for (size_t index = 0; index < input->count; index++) {
@@ -78,7 +78,7 @@ VALUE coo_get_coords(VALUE self) {
 VALUE coo_get_count(VALUE self) {
   coo_matrix* input;
 
-  Data_Get_Struct(self, coo_matrix, input);
+  TypedData_Get_Struct(self, coo_matrix, input);
 
   return SIZET2NUM(input->count);
 }
@@ -87,7 +87,7 @@ VALUE coo_get_count(VALUE self) {
 VALUE coo_get_ndims(VALUE self) {
   coo_matrix* input;
 
-  Data_Get_Struct(self, coo_matrix, input);
+  TypedData_Get_Struct(self, coo_matrix, input);
 
   return SIZET2NUM(input->ndims);
 }
@@ -96,7 +96,7 @@ VALUE coo_get_ndims(VALUE self) {
 VALUE coo_get_dtype(VALUE self) {
   coo_matrix* input;
 
-  Data_Get_Struct(self, coo_matrix, input);
+  TypedData_Get_Struct(self, coo_matrix, input);
 
   return ID2SYM(rb_intern(DTYPE_NAMES[input->dtype]));
 }
@@ -105,7 +105,7 @@ VALUE coo_get_dtype(VALUE self) {
 VALUE coo_get_shape(VALUE self) {
   coo_matrix* input;
 
-  Data_Get_Struct(self, coo_matrix, input);
+  TypedData_Get_Struct(self, coo_matrix, input);
 
   VALUE* array = ALLOC_N(VALUE, input->ndims);
   for (size_t index = 0; index < input->ndims; index++) {
