@@ -18,8 +18,8 @@ double coo_perform_oper(double val_a, double val_b, char oper) {
 VALUE coo_elementwise_binary(VALUE self, VALUE another, char oper) {
   coo_matrix* left;
   coo_matrix* right;
-  TypedData_Get_Struct(self, coo_matrix, left);
-  TypedData_Get_Struct(another, coo_matrix, right);
+  TypedData_Get_Struct(self, coo_matrix, &coo_data_type, left);
+  TypedData_Get_Struct(another, coo_matrix, &coo_data_type, right);
 
   coo_matrix* result = ALLOC(coo_matrix);
   result->count = 0;
@@ -106,7 +106,7 @@ VALUE coo_elementwise_binary(VALUE self, VALUE another, char oper) {
     result->count++;
   }
 
-  return TypedData_Wrap_Struct(COO, NULL, coo_free, result);
+  return TypedData_Wrap_Struct(COO, &coo_data_type, result);
 }
 
 VALUE coo_add(VALUE self, VALUE another) {

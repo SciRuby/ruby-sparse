@@ -41,6 +41,19 @@ typedef struct COO_STRUCT
   size_t* ja;       //col index
 }coo_matrix;
 
+void coo_free(void* ptr);
+size_t coo_memsize(const void* ptr);
+
+static const rb_data_type_t coo_data_type = {
+  "ruby-sparse/coo",
+  {
+    0,
+    coo_free,
+    coo_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
+
 typedef struct CSR_STRUCT
 {
   sp_dtype dtype;
@@ -51,6 +64,19 @@ typedef struct CSR_STRUCT
   size_t* ip;       //row pointer vals
   size_t* ja;       //col index
 }csr_matrix;
+
+void csr_free(void* ptr);
+size_t csr_memsize(const void* ptr);
+
+static const rb_data_type_t csr_data_type = {
+  "ruby-sparse/csr",
+  {
+    0,
+    csr_free,
+    csr_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
 
 typedef struct CSC_STRUCT
 {
@@ -63,6 +89,19 @@ typedef struct CSC_STRUCT
   size_t* jp;       //col pointer vals
 }csc_matrix;
 
+void csc_free(void* ptr);
+size_t csc_memsize(const void* ptr);
+
+static const rb_data_type_t csc_data_type = {
+  "ruby-sparse/csc",
+  {
+    0,
+    csc_free,
+    csc_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
+
 typedef struct DIA_STRUCT
 {
   sp_dtype dtype;
@@ -71,6 +110,19 @@ typedef struct DIA_STRUCT
   size_t* shape;
   double* elements; //elements array
 }dia_matrix;
+
+void dia_free(void* ptr);
+size_t dia_memsize(const void* ptr);
+
+static const rb_data_type_t dia_data_type = {
+  "ruby-sparse/dia",
+  {
+    0,
+    dia_free,
+    dia_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
 
 // typedef struct GCXS_STRUCT
 // {
@@ -81,7 +133,7 @@ typedef struct DIA_STRUCT
 //   double* elements; //elements array
 //   size_t* ia;       //row index
 //   size_t* ja;       //col index
-// }coo_matrix;
+// }gcxs_matrix;
 
 VALUE RubySparse = Qnil;
 VALUE SparseArray = Qnil;
@@ -102,7 +154,6 @@ VALUE coo_get_coords(VALUE self);
 VALUE coo_get_count(VALUE self);
 VALUE coo_get_ndims(VALUE self);
 VALUE coo_alloc(VALUE klass);
-void coo_free(coo_matrix* mat);
 
 VALUE coo_add(VALUE self, VALUE another);
 VALUE coo_sub(VALUE self, VALUE another);
@@ -120,7 +171,6 @@ VALUE csr_get_indptr(VALUE self);
 VALUE csr_get_count(VALUE self);
 VALUE csr_get_ndims(VALUE self);
 VALUE csr_alloc(VALUE klass);
-void csr_free(csr_matrix* mat);
 
 VALUE csr_add(VALUE self, VALUE another);
 VALUE csr_sub(VALUE self, VALUE another);
@@ -138,7 +188,6 @@ VALUE csc_get_indptr(VALUE self);
 VALUE csc_get_count(VALUE self);
 VALUE csc_get_ndims(VALUE self);
 VALUE csc_alloc(VALUE klass);
-void csc_free(csc_matrix* mat);
 
 VALUE csc_add(VALUE self, VALUE another);
 VALUE csc_sub(VALUE self, VALUE another);
@@ -154,7 +203,6 @@ VALUE dia_get_elements(VALUE self);
 VALUE dia_get_count(VALUE self);
 VALUE dia_get_ndims(VALUE self);
 VALUE dia_alloc(VALUE klass);
-void dia_free(dia_matrix* mat);
 
 VALUE dia_add(VALUE self, VALUE another);
 VALUE dia_sub(VALUE self, VALUE another);
