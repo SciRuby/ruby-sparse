@@ -1,3 +1,7 @@
+#include "string.h"
+#include "math.h"
+
+
 double csc_perform_oper(double val_a, double val_b, char oper) {
   switch(oper) {
     case '+':
@@ -129,4 +133,60 @@ VALUE csc_sub(VALUE self, VALUE another) {
 
 VALUE csc_mul(VALUE self, VALUE another) {
   return csc_elementwise_binary(self, another, '*');
+}
+
+double csc_unary_oper(double val, const char* oper) {
+  if (strcmp(oper, "sin") == 0)
+    return sin(val);
+  else if (strcmp(oper, "cos") == 0)
+    return cos(val);
+  else if (strcmp(oper, "tan") == 0)
+    return tan(val);
+  else
+    return 0.00;
+}
+
+/*
+  Takes the matrix and performs unary operator elementwise
+*/
+VALUE csc_elementwise_unary(VALUE self, const char* oper) {
+  csc_matrix* left;
+  TypedData_Get_Struct(self, csc_matrix, &csc_data_type, left);
+
+  csc_matrix* result = ALLOC(csc_matrix);
+  result->dtype = left->dtype;
+  result->count = left->count;
+  result->ndims = left->ndims;
+  result->shape = ALLOC_N(size_t, result->ndims);
+
+  for (size_t index = 0; index < result->ndims; index++) {
+    result->shape[index] = left->shape[index];
+  }
+
+  result->elements = ALLOC_N(double, left->count);
+  result->ia       = ALLOC_N(size_t, left->count);
+  result->jp       = ALLOC_N(size_t, left->shape[1] + 1);
+
+  for(size_t index = 0; index < result->count; index++) {
+    result->elements[index] = csc_unary_oper(left->elements[index], oper);
+    result->ia[index] = left->ia[index];
+  }
+
+  for(size_t index = 0; index <= left->shape[1]; index++) {
+    result->jp[index] = left->jp[index];
+  }
+
+  return TypedData_Wrap_Struct(CSC, &csc_data_type, result);
+}
+
+VALUE csc_sin(VALUE self) {
+  return csc_elementwise_unary(self, "sin");
+}
+
+VALUE csc_cos(VALUE self) {
+  return csc_elementwise_unary(self, "cos");
+}
+
+VALUE csc_tan(VALUE self) {
+  return csc_elementwise_unary(self, "tan");
 }
