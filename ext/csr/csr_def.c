@@ -186,3 +186,4 @@ VALUE csr_to_coo(VALUE self) {
 
 
 #include "elementwise.c"
+#include "iteration.c"

@@ -166,6 +166,9 @@ VALUE coo_sin(VALUE self);
 VALUE coo_cos(VALUE self);
 VALUE coo_tan(VALUE self);
 
+VALUE coo_each(VALUE self);
+VALUE coo_each_with_indices(VALUE self);
+
 VALUE coo_from_nmatrix(VALUE self, VALUE nmat);
 
 // csr methods declaration
@@ -188,6 +191,9 @@ VALUE csr_mul(VALUE self, VALUE another);
 VALUE csr_sin(VALUE self);
 VALUE csr_cos(VALUE self);
 VALUE csr_tan(VALUE self);
+
+VALUE csr_each(VALUE self);
+VALUE csr_each_row(VALUE self);
 
 VALUE csr_from_nmatrix(VALUE self, VALUE nmat);
 
@@ -212,6 +218,9 @@ VALUE csc_sin(VALUE self);
 VALUE csc_cos(VALUE self);
 VALUE csc_tan(VALUE self);
 
+VALUE csc_each(VALUE self);
+VALUE csc_each_column(VALUE self);
+
 VALUE csc_from_nmatrix(VALUE self, VALUE nmat);
 
 // dia methods declaration
@@ -230,6 +239,8 @@ VALUE dia_mul(VALUE self, VALUE another);
 VALUE dia_sin(VALUE self);
 VALUE dia_cos(VALUE self);
 VALUE dia_tan(VALUE self);
+
+VALUE dia_each(VALUE self);
 
 VALUE dia_from_nmatrix(VALUE self, VALUE nmat);
 
@@ -264,6 +275,9 @@ void Init_ruby_sparse() {
   rb_define_method(COO, "cos", coo_cos, 0);
   rb_define_method(COO, "tan", coo_tan, 0);
 
+  rb_define_method(COO, "each", coo_each, 0);
+  rb_define_method(COO, "each_with_indices", coo_each_with_indices, 0);
+
   //rb_define_singleton_method(COO, "from_nmatrix", coo_from_nmatrix, 1);
 
 
@@ -286,6 +300,9 @@ void Init_ruby_sparse() {
   rb_define_method(CSR, "sin", csr_sin, 0);
   rb_define_method(CSR, "cos", csr_cos, 0);
   rb_define_method(CSR, "tan", csr_tan, 0);
+
+  rb_define_method(CSR, "each", csr_each, 0);
+  rb_define_method(CSR, "each_row", csr_each_row, 0);
 
   //rb_define_singleton_method(CSR, "from_nmatrix", csr_from_nmatrix, 1);
 
@@ -310,6 +327,9 @@ void Init_ruby_sparse() {
   rb_define_method(CSC, "cos", csc_cos, 0);
   rb_define_method(CSC, "tan", csc_tan, 0);
 
+  rb_define_method(CSC, "each", csc_each, 0);
+  rb_define_method(CSC, "each_column", csc_each_column, 0);
+
   //rb_define_singleton_method(CSC, "from_nmatrix", csc_from_nmatrix, 1);
 
 
@@ -327,6 +347,8 @@ void Init_ruby_sparse() {
   rb_define_method(DIA, "sin", dia_sin, 0);
   rb_define_method(DIA, "cos", dia_cos, 0);
   rb_define_method(DIA, "tan", dia_tan, 0);
+
+  rb_define_method(DIA, "each", dia_each, 0);
 
   //rb_define_singleton_method(DIA, "from_nmatrix", dia_from_nmatrix, 1);
 }

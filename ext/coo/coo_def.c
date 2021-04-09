@@ -228,3 +228,4 @@ VALUE coo_to_csc(VALUE self) {
 
 
 #include "elementwise.c"
+#include "iteration.c"

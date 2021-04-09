@@ -99,3 +99,4 @@ VALUE dia_get_shape(VALUE self) {
 
 
 #include "elementwise.c"
+#include "iteration.c"
