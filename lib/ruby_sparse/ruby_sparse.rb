@@ -29,14 +29,6 @@ module RubySparse
       original_inspect = original_inspect[0...original_inspect.size-1]
       original_inspect + "; " + inspect_helper.join("; ") + ">"
     end
-  
-    protected
-  
-    def inspect_helper #:nodoc:
-      ary = []
-      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
-      ary
-    end
 
     def self.from_nmatrix(nmat)
       nm_elements = nmat.elements
@@ -110,6 +102,14 @@ module RubySparse
 
       self.new(shape, elements, ia, ja)
     end
+
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
+    end
     
   end
 
@@ -130,14 +130,6 @@ module RubySparse
       original_inspect = super()
       original_inspect = original_inspect[0...original_inspect.size-1]
       original_inspect + "; " + inspect_helper.join("; ") + ">"
-    end
-  
-    protected
-  
-    def inspect_helper #:nodoc:
-      ary = []
-      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
-      ary
     end
 
     def self.from_nmatrix(nmat)
@@ -193,6 +185,14 @@ module RubySparse
       self.new(shape, elements)
     end
 
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
+    end
+
   end
 
   class CSR < SparseArray
@@ -212,14 +212,6 @@ module RubySparse
       original_inspect = super()
       original_inspect = original_inspect[0...original_inspect.size-1]
       original_inspect + "; " + inspect_helper.join("; ") + ">"
-    end
-  
-    protected
-  
-    def inspect_helper #:nodoc:
-      ary = []
-      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
-      ary
     end
 
     def self.from_nmatrix(nmat)
@@ -267,6 +259,10 @@ module RubySparse
       return m
     end
 
+    def to_csc
+      return self.to_coo.to_csc
+    end
+
     def _dump data
       [
         dim,
@@ -299,6 +295,14 @@ module RubySparse
       self.new(shape, elements, ip, ja)
     end
 
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
+    end
+
   end
 
   class CSC < SparseArray
@@ -318,14 +322,6 @@ module RubySparse
       original_inspect = super()
       original_inspect = original_inspect[0...original_inspect.size-1]
       original_inspect + "; " + inspect_helper.join("; ") + ">"
-    end
-  
-    protected
-  
-    def inspect_helper #:nodoc:
-      ary = []
-      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
-      ary
     end
 
     def self.from_nmatrix(nmat)
@@ -363,14 +359,18 @@ module RubySparse
 
       nm_elements = Array.new(self.shape[0]*self.shape[1], 0)
       for j in (0...self.shape[1])
-        for i in (jp[i]...jp[i + 1])
-          nm_index = (self.shape[0] * i) + ia[j]
-          nm_elements[nm_index] = self.elements[j]
+        for i in (jp[j]...jp[j + 1])
+          nm_index = (self.shape[0] * j) + ia[i]
+          nm_elements[nm_index] = self.elements[i]
         end
       end
       
       m = NMatrix.new self.shape, nm_elements
       return m
+    end
+
+    def to_csr
+      return self.to_coo.to_csr
     end
 
     def _dump data
@@ -403,6 +403,14 @@ module RubySparse
       # convert jp to ja here and then pass ja below instead
 
       self.new(shape, elements, ia, jp)
+    end
+
+    protected
+  
+    def inspect_helper #:nodoc:
+      ary = []
+      ary << "shape: [#{shape.join(',')}]" << "dtype: #{dtype}" << "nnz: #{nzcount}"
+      ary
     end
 
   end

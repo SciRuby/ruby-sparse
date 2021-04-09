@@ -155,6 +155,9 @@ VALUE coo_get_count(VALUE self);
 VALUE coo_get_ndims(VALUE self);
 VALUE coo_alloc(VALUE klass);
 
+VALUE coo_to_csr(VALUE self);
+VALUE coo_to_csc(VALUE self);
+
 VALUE coo_add(VALUE self, VALUE another);
 VALUE coo_sub(VALUE self, VALUE another);
 VALUE coo_mul(VALUE self, VALUE another);
@@ -176,6 +179,8 @@ VALUE csr_get_count(VALUE self);
 VALUE csr_get_ndims(VALUE self);
 VALUE csr_alloc(VALUE klass);
 
+VALUE csr_to_coo(VALUE self);
+
 VALUE csr_add(VALUE self, VALUE another);
 VALUE csr_sub(VALUE self, VALUE another);
 VALUE csr_mul(VALUE self, VALUE another);
@@ -196,6 +201,8 @@ VALUE csc_get_indptr(VALUE self);
 VALUE csc_get_count(VALUE self);
 VALUE csc_get_ndims(VALUE self);
 VALUE csc_alloc(VALUE klass);
+
+VALUE csc_to_coo(VALUE self);
 
 VALUE csc_add(VALUE self, VALUE another);
 VALUE csc_sub(VALUE self, VALUE another);
@@ -246,6 +253,9 @@ void Init_ruby_sparse() {
   rb_define_method(COO, "nzcount", coo_get_count, 0);
   rb_define_method(COO, "dim", coo_get_ndims, 0);
 
+  rb_define_method(COO, "to_csr", coo_to_csr, 0);
+  rb_define_method(COO, "to_csc", coo_to_csc, 0);
+
   rb_define_method(COO, "+", coo_add, 1);
   rb_define_method(COO, "-", coo_sub, 1);
   rb_define_method(COO, "*", coo_mul, 1);
@@ -267,6 +277,8 @@ void Init_ruby_sparse() {
   rb_define_method(CSR, "nzcount", csr_get_count, 0);
   rb_define_method(CSR, "dim", csr_get_ndims, 0);
 
+  rb_define_method(CSR, "to_coo", csr_to_coo, 0);
+
   rb_define_method(CSR, "+", csr_add, 1);
   rb_define_method(CSR, "-", csr_sub, 1);
   rb_define_method(CSR, "*", csr_mul, 1);
@@ -287,6 +299,8 @@ void Init_ruby_sparse() {
   rb_define_method(CSC, "indptr", csc_get_indptr, 0);
   rb_define_method(CSC, "nzcount", csc_get_count, 0);
   rb_define_method(CSC, "dim", csc_get_ndims, 0);
+
+  rb_define_method(CSC, "to_coo", csc_to_coo, 0);
 
   rb_define_method(CSC, "+", csc_add, 1);
   rb_define_method(CSC, "-", csc_sub, 1);

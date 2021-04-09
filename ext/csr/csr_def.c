@@ -154,5 +154,35 @@ VALUE csr_get_shape(VALUE self) {
   return rb_ary_new4(input->ndims, array);
 }
 
+VALUE csr_to_coo(VALUE self) {
+  csr_matrix* left;
+  TypedData_Get_Struct(self, csr_matrix, &csr_data_type, left);
+
+  coo_matrix* result = ALLOC(coo_matrix);
+  result->dtype = left->dtype;
+  result->count = left->count;
+  result->ndims = left->ndims;
+  result->shape = ALLOC_N(size_t, result->ndims);
+
+  for (size_t index = 0; index < result->ndims; index++) {
+    result->shape[index] = left->shape[index];
+  }
+
+  result->elements = ALLOC_N(double, left->count);
+  result->ia       = ALLOC_N(size_t, left->count);
+  result->ja       = ALLOC_N(size_t, left->count);
+
+  for(size_t i = 0; i < left->shape[0]; i++) {
+    for(size_t j = left->ip[i]; j < left->ip[i + 1]; j++) {
+      // size_t index = (left->shape[1] * i) + left->ja[j];
+      result->elements[j] = left->elements[j];
+      result->ia[j] = i;
+      result->ja[j] = left->ja[j];
+    }
+  }
+
+  return TypedData_Wrap_Struct(COO, &coo_data_type, result);
+}
+
 
 #include "elementwise.c"
