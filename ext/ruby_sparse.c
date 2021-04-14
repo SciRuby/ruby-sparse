@@ -194,6 +194,7 @@ VALUE csr_tan(VALUE self);
 
 VALUE csr_each(VALUE self);
 VALUE csr_each_row(VALUE self);
+VALUE csr_each_with_indices(VALUE self);
 
 VALUE csr_from_nmatrix(VALUE self, VALUE nmat);
 
@@ -220,6 +221,7 @@ VALUE csc_tan(VALUE self);
 
 VALUE csc_each(VALUE self);
 VALUE csc_each_column(VALUE self);
+VALUE csc_each_with_indices(VALUE self);
 
 VALUE csc_from_nmatrix(VALUE self, VALUE nmat);
 
@@ -303,6 +305,7 @@ void Init_ruby_sparse() {
 
   rb_define_method(CSR, "each", csr_each, 0);
   rb_define_method(CSR, "each_row", csr_each_row, 0);
+  rb_define_method(CSR, "each_with_indices", csr_each_with_indices, 0);
 
   //rb_define_singleton_method(CSR, "from_nmatrix", csr_from_nmatrix, 1);
 
@@ -329,6 +332,7 @@ void Init_ruby_sparse() {
 
   rb_define_method(CSC, "each", csc_each, 0);
   rb_define_method(CSC, "each_column", csc_each_column, 0);
+  rb_define_method(CSC, "each_with_indices", csc_each_with_indices, 0);
 
   //rb_define_singleton_method(CSC, "from_nmatrix", csc_from_nmatrix, 1);
 

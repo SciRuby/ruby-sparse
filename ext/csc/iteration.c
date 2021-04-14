@@ -28,3 +28,26 @@ VALUE csc_each_column(VALUE self) {
 
   return self;
 }
+
+VALUE csc_each_with_indices(VALUE self) {
+  csc_matrix* input;
+
+  TypedData_Get_Struct(self, csc_matrix, &csc_data_type, input);
+
+  VALUE* result_array = ALLOC_N(VALUE, input->ndims + 1);
+
+  for (size_t j = 0; j < input->shape[1]; j++) {
+    size_t col_index = j;
+    for(size_t i = input->jp[j]; i < input->jp[j + 1]; i++) {
+      size_t row_index = input->ia[i];
+      size_t index = i;
+      result_array[0] = DBL2NUM(input->elements[index]);
+      result_array[1] = INT2NUM(row_index);
+      result_array[2] = INT2NUM(col_index);
+      rb_yield(rb_ary_new4(input->ndims + 1, result_array));
+
+    }
+  }
+
+  return self;
+}
