@@ -41,6 +41,67 @@ typedef struct COO_STRUCT
   size_t* ja;       //col index
 }coo_matrix;
 
+void coo_free(void* ptr);
+size_t coo_memsize(const void* ptr);
+
+static const rb_data_type_t coo_data_type = {
+  "ruby-sparse/coo",
+  {
+    0,
+    coo_free,
+    coo_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
+
+typedef struct CSR_STRUCT
+{
+  sp_dtype dtype;
+  size_t ndims;
+  size_t count;     //count of non-zero elements
+  size_t* shape;
+  double* elements; //elements array
+  size_t* ip;       //row pointer vals
+  size_t* ja;       //col index
+}csr_matrix;
+
+void csr_free(void* ptr);
+size_t csr_memsize(const void* ptr);
+
+static const rb_data_type_t csr_data_type = {
+  "ruby-sparse/csr",
+  {
+    0,
+    csr_free,
+    csr_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
+
+typedef struct CSC_STRUCT
+{
+  sp_dtype dtype;
+  size_t ndims;
+  size_t count;     //count of non-zero elements
+  size_t* shape;
+  double* elements; //elements array
+  size_t* ia;       //row index
+  size_t* jp;       //col pointer vals
+}csc_matrix;
+
+void csc_free(void* ptr);
+size_t csc_memsize(const void* ptr);
+
+static const rb_data_type_t csc_data_type = {
+  "ruby-sparse/csc",
+  {
+    0,
+    csc_free,
+    csc_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
+
 typedef struct DIA_STRUCT
 {
   sp_dtype dtype;
@@ -49,6 +110,19 @@ typedef struct DIA_STRUCT
   size_t* shape;
   double* elements; //elements array
 }dia_matrix;
+
+void dia_free(void* ptr);
+size_t dia_memsize(const void* ptr);
+
+static const rb_data_type_t dia_data_type = {
+  "ruby-sparse/dia",
+  {
+    0,
+    dia_free,
+    dia_memsize,
+  },
+  0, 0, RUBY_TYPED_FREE_IMMEDIATELY
+};
 
 // typedef struct GCXS_STRUCT
 // {
@@ -59,11 +133,13 @@ typedef struct DIA_STRUCT
 //   double* elements; //elements array
 //   size_t* ia;       //row index
 //   size_t* ja;       //col index
-// }coo_matrix;
+// }gcxs_matrix;
 
 VALUE RubySparse = Qnil;
 VALUE SparseArray = Qnil;
 VALUE COO = Qnil;
+VALUE CSR = Qnil;
+VALUE CSC = Qnil;
 VALUE DIA = Qnil;
 // VALUE GCXS = Qnil;
 
@@ -78,13 +154,76 @@ VALUE coo_get_coords(VALUE self);
 VALUE coo_get_count(VALUE self);
 VALUE coo_get_ndims(VALUE self);
 VALUE coo_alloc(VALUE klass);
-void coo_free(coo_matrix* mat);
+
+VALUE coo_to_csr(VALUE self);
+VALUE coo_to_csc(VALUE self);
 
 VALUE coo_add(VALUE self, VALUE another);
 VALUE coo_sub(VALUE self, VALUE another);
 VALUE coo_mul(VALUE self, VALUE another);
 
+VALUE coo_sin(VALUE self);
+VALUE coo_cos(VALUE self);
+VALUE coo_tan(VALUE self);
+
+VALUE coo_each(VALUE self);
+VALUE coo_each_with_indices(VALUE self);
+
 VALUE coo_from_nmatrix(VALUE self, VALUE nmat);
+
+// csr methods declaration
+VALUE csr_init(int argc, VALUE* argv, VALUE self);
+VALUE csr_get_dtype(VALUE self);
+VALUE csr_get_shape(VALUE self);
+VALUE csr_get_elements(VALUE self);
+VALUE csr_get_indices(VALUE self);
+VALUE csr_get_indptr(VALUE self);
+VALUE csr_get_count(VALUE self);
+VALUE csr_get_ndims(VALUE self);
+VALUE csr_alloc(VALUE klass);
+
+VALUE csr_to_coo(VALUE self);
+
+VALUE csr_add(VALUE self, VALUE another);
+VALUE csr_sub(VALUE self, VALUE another);
+VALUE csr_mul(VALUE self, VALUE another);
+
+VALUE csr_sin(VALUE self);
+VALUE csr_cos(VALUE self);
+VALUE csr_tan(VALUE self);
+
+VALUE csr_each(VALUE self);
+VALUE csr_each_row(VALUE self);
+VALUE csr_each_with_indices(VALUE self);
+
+VALUE csr_from_nmatrix(VALUE self, VALUE nmat);
+
+// csc methods declaration
+VALUE csc_init(int argc, VALUE* argv, VALUE self);
+VALUE csc_get_dtype(VALUE self);
+VALUE csc_get_shape(VALUE self);
+VALUE csc_get_elements(VALUE self);
+VALUE csc_get_indices(VALUE self);
+VALUE csc_get_indptr(VALUE self);
+VALUE csc_get_count(VALUE self);
+VALUE csc_get_ndims(VALUE self);
+VALUE csc_alloc(VALUE klass);
+
+VALUE csc_to_coo(VALUE self);
+
+VALUE csc_add(VALUE self, VALUE another);
+VALUE csc_sub(VALUE self, VALUE another);
+VALUE csc_mul(VALUE self, VALUE another);
+
+VALUE csc_sin(VALUE self);
+VALUE csc_cos(VALUE self);
+VALUE csc_tan(VALUE self);
+
+VALUE csc_each(VALUE self);
+VALUE csc_each_column(VALUE self);
+VALUE csc_each_with_indices(VALUE self);
+
+VALUE csc_from_nmatrix(VALUE self, VALUE nmat);
 
 // dia methods declaration
 VALUE dia_init(int argc, VALUE* argv, VALUE self);
@@ -94,11 +233,16 @@ VALUE dia_get_elements(VALUE self);
 VALUE dia_get_count(VALUE self);
 VALUE dia_get_ndims(VALUE self);
 VALUE dia_alloc(VALUE klass);
-void dia_free(dia_matrix* mat);
 
 VALUE dia_add(VALUE self, VALUE another);
 VALUE dia_sub(VALUE self, VALUE another);
 VALUE dia_mul(VALUE self, VALUE another);
+
+VALUE dia_sin(VALUE self);
+VALUE dia_cos(VALUE self);
+VALUE dia_tan(VALUE self);
+
+VALUE dia_each(VALUE self);
 
 VALUE dia_from_nmatrix(VALUE self, VALUE nmat);
 
@@ -108,6 +252,8 @@ void Init_ruby_sparse() {
 
   SparseArray = rb_define_class_under(RubySparse, "SparseArray", rb_cObject);
   COO         = rb_define_class_under(RubySparse, "COO", SparseArray);
+  CSR         = rb_define_class_under(RubySparse, "CSR", SparseArray);
+  CSC         = rb_define_class_under(RubySparse, "CSC", SparseArray);
   DIA         = rb_define_class_under(RubySparse, "DIA", SparseArray);
   // GCXS        = rb_define_class_under(RubySparse, "GCXS", SparseArray);
 
@@ -120,11 +266,75 @@ void Init_ruby_sparse() {
   rb_define_method(COO, "nzcount", coo_get_count, 0);
   rb_define_method(COO, "dim", coo_get_ndims, 0);
 
+  rb_define_method(COO, "to_csr", coo_to_csr, 0);
+  rb_define_method(COO, "to_csc", coo_to_csc, 0);
+
   rb_define_method(COO, "+", coo_add, 1);
   rb_define_method(COO, "-", coo_sub, 1);
   rb_define_method(COO, "*", coo_mul, 1);
 
+  rb_define_method(COO, "sin", coo_sin, 0);
+  rb_define_method(COO, "cos", coo_cos, 0);
+  rb_define_method(COO, "tan", coo_tan, 0);
+
+  rb_define_method(COO, "each", coo_each, 0);
+  rb_define_method(COO, "each_with_indices", coo_each_with_indices, 0);
+
   //rb_define_singleton_method(COO, "from_nmatrix", coo_from_nmatrix, 1);
+
+
+  rb_define_alloc_func(CSR, csr_alloc);
+  rb_define_method(CSR, "initialize", csr_init, -1);
+  rb_define_method(CSR, "dtype", csr_get_dtype, 0);
+  rb_define_method(CSR, "shape", csr_get_shape, 0);
+  rb_define_method(CSR, "elements", csr_get_elements, 0);
+  rb_define_method(CSR, "indices", csr_get_indices, 0);
+  rb_define_method(CSR, "indptr", csr_get_indptr, 0);
+  rb_define_method(CSR, "nzcount", csr_get_count, 0);
+  rb_define_method(CSR, "dim", csr_get_ndims, 0);
+
+  rb_define_method(CSR, "to_coo", csr_to_coo, 0);
+
+  rb_define_method(CSR, "+", csr_add, 1);
+  rb_define_method(CSR, "-", csr_sub, 1);
+  rb_define_method(CSR, "*", csr_mul, 1);
+
+  rb_define_method(CSR, "sin", csr_sin, 0);
+  rb_define_method(CSR, "cos", csr_cos, 0);
+  rb_define_method(CSR, "tan", csr_tan, 0);
+
+  rb_define_method(CSR, "each", csr_each, 0);
+  rb_define_method(CSR, "each_row", csr_each_row, 0);
+  rb_define_method(CSR, "each_with_indices", csr_each_with_indices, 0);
+
+  //rb_define_singleton_method(CSR, "from_nmatrix", csr_from_nmatrix, 1);
+
+
+  rb_define_alloc_func(CSC, csc_alloc);
+  rb_define_method(CSC, "initialize", csc_init, -1);
+  rb_define_method(CSC, "dtype", csc_get_dtype, 0);
+  rb_define_method(CSC, "shape", csc_get_shape, 0);
+  rb_define_method(CSC, "elements", csc_get_elements, 0);
+  rb_define_method(CSC, "indices", csc_get_indices, 0);
+  rb_define_method(CSC, "indptr", csc_get_indptr, 0);
+  rb_define_method(CSC, "nzcount", csc_get_count, 0);
+  rb_define_method(CSC, "dim", csc_get_ndims, 0);
+
+  rb_define_method(CSC, "to_coo", csc_to_coo, 0);
+
+  rb_define_method(CSC, "+", csc_add, 1);
+  rb_define_method(CSC, "-", csc_sub, 1);
+  rb_define_method(CSC, "*", csc_mul, 1);
+
+  rb_define_method(CSC, "sin", csc_sin, 0);
+  rb_define_method(CSC, "cos", csc_cos, 0);
+  rb_define_method(CSC, "tan", csc_tan, 0);
+
+  rb_define_method(CSC, "each", csc_each, 0);
+  rb_define_method(CSC, "each_column", csc_each_column, 0);
+  rb_define_method(CSC, "each_with_indices", csc_each_with_indices, 0);
+
+  //rb_define_singleton_method(CSC, "from_nmatrix", csc_from_nmatrix, 1);
 
 
   rb_define_alloc_func(DIA, dia_alloc);
@@ -138,10 +348,18 @@ void Init_ruby_sparse() {
   rb_define_method(DIA, "-", dia_sub, 1);
   rb_define_method(DIA, "*", dia_mul, 1);
 
+  rb_define_method(DIA, "sin", dia_sin, 0);
+  rb_define_method(DIA, "cos", dia_cos, 0);
+  rb_define_method(DIA, "tan", dia_tan, 0);
+
+  rb_define_method(DIA, "each", dia_each, 0);
+
   //rb_define_singleton_method(DIA, "from_nmatrix", dia_from_nmatrix, 1);
 }
 
 #include "coo/coo_def.c"
+#include "csr/csr_def.c"
+#include "csc/csc_def.c"
 #include "dia/dia_def.c"
 
 #include "interfaces/nmatrix.c"
